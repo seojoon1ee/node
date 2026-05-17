@@ -1,0 +1,24 @@
+/* Container to make it look like a textarea */
+.tiptap-container {
+  border: 1px solid #FFF0E3;
+  padding: 16px;
+  background-color: #282828;
+  min-height: 100%;
+  cursor: text;
+}
+
+/* TipTap injects a div with the class .ProseMirror. We need to style it. */
+.ProseMirror {
+  outline: none; /* Removes the ugly blue focus ring inside the container */
+  min-height: 150px;
+  font-family: inherit;
+}
+
+/* --- TipTap Placeholder Styling --- */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #959595;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

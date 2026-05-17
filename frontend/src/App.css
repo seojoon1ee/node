@@ -28,6 +28,7 @@ textarea:focus {
 }
 
 #edit {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   
