@@ -45,8 +45,7 @@ function MainWorkspace() {
       
       // Revalidate
       try {
-        const response = await fetch(`http://localhost:3001/api/load?filePath=${encodeURIComponent(filePath)}`);
-        const data = await response.json();
+        const response = await fetch(`/api/load?filePath=${encodeURIComponent(filePath)}`);        const data = await response.json();
         
         if (data.success) {
           if (cacheRef.current[filePath] !== data.content) {
@@ -70,7 +69,7 @@ function MainWorkspace() {
     
     console.log('Saving...');
     try {
-      const response = await fetch('http://localhost:3001/api/save', {
+      const response = await fetch('/api/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filePath, content }),
@@ -104,7 +103,7 @@ function MainWorkspace() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/files');
+        const response = await fetch('/api/files');
         const data = await response.json();
               
         if (data.success) {
@@ -133,7 +132,7 @@ function MainWorkspace() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/api/delete?filePath=${encodeURIComponent(filePath)}`, {
+      const response = await fetch(`/api/delete?filePath=${encodeURIComponent(filePath)}`, {
         method: 'DELETE',
       });
       
@@ -163,7 +162,7 @@ function MainWorkspace() {
 
     console.log('Creating file...');
     try {
-      const response = await fetch('http://localhost:3001/api/save', {
+      const response = await fetch('/api/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filePath: sanitizedName, content: '' }),

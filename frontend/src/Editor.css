@@ -7,9 +7,8 @@
   cursor: text;
 }
 
-/* TipTap injects a div with the class .ProseMirror. We need to style it. */
 .ProseMirror {
-  outline: none; /* Removes the ugly blue focus ring inside the container */
+  outline: none;
   min-height: 150px;
   font-family: inherit;
 }

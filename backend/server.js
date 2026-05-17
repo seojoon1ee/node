@@ -4,9 +4,6 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-app.use(cors({
-  origin: 'http://localhost:8080'
-}));
 app.use(express.json());
 
 const NOTES_DIR = path.join(__dirname, 'notes');
