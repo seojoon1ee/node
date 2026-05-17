@@ -8,6 +8,7 @@ services:
       - NODE_ENV=production
     volumes:
       - ./backend/notes:/app/notes
+    restart: always
 
   frontend:
     container_name: node-text-edit-frontend
@@ -16,3 +17,4 @@ services:
       - "8080:80"
     depends_on:
       - backend
+    restart: always
