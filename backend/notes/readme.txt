@@ -1,1 +1,1 @@
-<p>daysidytaisud\asdaisd\</p><p><strong>asdhkashdkajsdas</strong></p><p></p><h1>hi</h1><h2>hello</h2><p></p>
+<h1>README</h1><h3>Node Text Editor</h3><p>Node is a no-bs, extremely simple and lightweight text editing app which offers WYSIWYG editing using Tiptap. No AI, no encryption, no markdown, no bloat.</p><p>Node uses Express with Node.js as its backend and React + Typescript as the frontend.</p>

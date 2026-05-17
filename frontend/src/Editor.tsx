@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -23,6 +24,16 @@ function Editor({ content, onChange, placeholder = "Start typing your node here.
       onChange(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const currentContent = editor.getHTML();
+
+    if (content !== currentContent && !editor.isFocused) {
+      editor.commands.setContent(content, { emitUpdate: false });
+    }
+  }, [content, editor]);
 
   return (
     <div className="tiptap-container">
