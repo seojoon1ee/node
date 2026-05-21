@@ -90,7 +90,7 @@ function MainWorkspace() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [serverIp]);
 
   useEffect(() => {
     fetchFiles();
@@ -130,7 +130,7 @@ function MainWorkspace() {
     };
 
     loadFile();
-  }, [filePath]);
+  }, [filePath, serverIp]);
 
   const saveFile = useCallback(async () => {
     if (!filePath) return;
@@ -149,7 +149,7 @@ function MainWorkspace() {
     } catch (error) {
       alert("Couldn't save: " + error);
     }
-  }, [filePath, content]);
+  }, [filePath, content, serverIp]);
 
   const renameFile = useCallback(async (newTitle: string) => {
     if (!filePath || !newTitle.trim()) return;
@@ -173,7 +173,7 @@ function MainWorkspace() {
     } catch (error) {
       alert("Couldn't rename: " + error);
     }
-  }, [filePath, content, navigate, fetchFiles]);
+  }, [filePath, content, navigate, fetchFiles, serverIp]);
 
   const createFile = useCallback(async () => {
     try {
@@ -192,7 +192,7 @@ function MainWorkspace() {
     } catch (error) {
       console.error('Create failed:', error);
     }
-  }, [filePath, navigate, fetchFiles]);
+  }, [filePath, navigate, fetchFiles, serverIp]);
 
   const deleteFile = useCallback(async () => {
     if (!filePath) {
@@ -217,14 +217,13 @@ function MainWorkspace() {
     } catch (error) {
       console.error('Delete failed:', error);
     }
-  }, [filePath, fileName, navigate, fetchFiles]);
+  }, [filePath, fileName, navigate, fetchFiles, serverIp]);
 
   function changeServer() {
     let ip = prompt("Server: ");
     if (ip) { 
       setServerIp(ip);
       localStorage.setItem('serverIp', ip);
-      fetchFiles();
       navigate("/");
     }
   }
