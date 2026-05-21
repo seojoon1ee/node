@@ -219,6 +219,15 @@ function MainWorkspace() {
     }
   }, [filePath, fileName, navigate, fetchFiles]);
 
+  function changeServer() {
+    let ip = prompt("Server: ");
+    if (ip) { 
+      setServerIp(ip);
+      localStorage.setItem('serverIp', ip);
+      fetchFiles();
+      navigate("/");
+    }
+  }
   // save shortcut listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -238,6 +247,8 @@ function MainWorkspace() {
             <header id="header">
               <button onClick={saveFile} className='headerButton'>save</button>
               <button onClick={deleteFile} className='headerButton'>delete</button>
+              <button onClick={changeServer} className='headerButton'>server</button>
+
             </header>
             <h1 style={{margin: "20px 0px"}}>Nodes</h1>
             
@@ -251,7 +262,6 @@ function MainWorkspace() {
             {!loading && !error && (
               <FileList files={files} onCreate={createFile} />
             )}
-            <button onClick={() => {let ip = prompt("SetServerIP"); if (ip){ setServerIp(ip); localStorage.setItem('serverIp', ip)}}}>chnage server ip</button>
         </div>
         <div id="edit">
           <Editor 
