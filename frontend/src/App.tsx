@@ -37,7 +37,7 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
       {parsedList.map(({ fullPath, name, depth }) => (
         <div 
           key={fullPath} 
-          style={{ paddingLeft: depth > 0 ? `${depth * 16}px` : '0px' }}
+          style={{ paddingLeft: depth > 0 ? `${depth * 10}px` : '0px' }}
         >
           <Link to={`/${fullPath}`} style={{ textDecoration: 'none' }}>
             <button className="button">
@@ -244,13 +244,14 @@ function MainWorkspace() {
       <div id="view">
         <div id="nodes">
             <header id="header">
-              <button onClick={saveFile} className='headerButton'>save</button>
-              <button onClick={deleteFile} className='headerButton'>delete</button>
-              <button onClick={changeServer} className='headerButton'>server</button>
+              <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
+              <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
+              <div style={{marginTop: "auto"}} />
+              <button onClick={changeServer} className='headerButton'><img src='/settings.png' style={{width: "100%"}} className='headerImage' /></button>
             </header>
             <div className='list'>
-              <h1 style={{margin: "20px 0px"}}>Nodes</h1>
-              
+              <h1 style={{margin: "15px 0px", paddingBottom: "5px"}}>Nodes</h1>
+            
               {loading && <p>Loading files...</p>}
               {error && <p style={{ color: 'red' }}>{error}</p>}
               
