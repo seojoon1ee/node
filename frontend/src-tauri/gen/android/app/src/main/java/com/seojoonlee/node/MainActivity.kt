@@ -1,4 +1,4 @@
-package com.tauri.dev
+package com.seojoonlee.node
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

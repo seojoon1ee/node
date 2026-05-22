@@ -1,3 +1,7 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+}
+
 hr {
   margin: 10px 15px 10px 0px;
   color: #FFF0E3;
