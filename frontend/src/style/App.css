@@ -30,7 +30,7 @@ textarea:focus {
 
 #view {
   display: grid;
-  grid-template-columns: 225px 1fr;
+  grid-template-columns: auto 1fr;
   border: 1px solid #FFF0E3;
 }
 
@@ -42,8 +42,6 @@ textarea:focus {
 
 #nodes {
   display: flex;
-  gap: 5px;
-  padding: 5px;
   border: solid #FFF0E3;
   border-width: 0px 1px 0px 0px;
 }
@@ -52,6 +50,7 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow: hidden;
 }
 
 #line {
@@ -65,7 +64,7 @@ textarea:focus {
   gap: 5px;
   border: solid #FFF0E3;
   border-width: 0px 1px 0px 0px;
-  padding-right: 5px;
+  padding: 5px 5px;
 }
 
 #addButton {
@@ -132,4 +131,7 @@ textarea:focus {
 
 .list {
   width: 100%;
+  padding-top: 5px;
+  padding-left: 5px;
+  overflow: hidden;
 }

@@ -68,6 +68,19 @@ function MainWorkspace() {
   const cacheRef = useRef<Record<string, string>>({});
   const [popupOpen, setPopupOpen] = useState(false);
 
+  const savedWidth = localStorage.getItem('sidebarWidth') ? localStorage.getItem('sidebarWidth') : "250";
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.buttons === 1 && sidebarRef.current) {
+      const sidebarLeft = sidebarRef.current.getBoundingClientRect().left;
+      const rawWidth = e.clientX - sidebarLeft;
+      
+      const newWidth = Math.max(160, Math.min(rawWidth, 360));
+      
+      sidebarRef.current.style.width = `${newWidth}px`;
+    }
+  };
+
   useEffect(() => {
     if (popupOpen) {
       const timer = setTimeout(() => setPopupOpen(false), 2000);
@@ -243,7 +256,7 @@ function MainWorkspace() {
   return (
     <>
       <div id="view">
-        <div id="nodes">
+        <div id="nodes" ref={sidebarRef} style={{ width: `${savedWidth}px` }}>
             <header id="header">
               <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
               <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
@@ -251,7 +264,7 @@ function MainWorkspace() {
               <button onClick={changeServer} className='headerButton'><img src='/settings.png' style={{width: "100%"}} className='headerImage' /></button>
             </header>
             <div className='list'>
-              <h1 style={{margin: "5px 0px", paddingBottom: "15px", paddingLeft: "5px"}}>Nodes</h1>
+              <h1 style={{ margin: "5px 0px", paddingBottom: "15px", paddingLeft: "5px" }}>Nodes</h1>
             
               {loading && <p>Loading files...</p>}
               {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -264,6 +277,23 @@ function MainWorkspace() {
                 <FileList files={files} onCreate={createFile} />
               )}
             </div>
+            <div
+              style={{ width: "10px", cursor: "col-resize", position: "relative", left: "5px" }}
+              onPointerDown={(e) => {
+                e.currentTarget.setPointerCapture(e.pointerId);
+                document.body.style.userSelect = "none";
+              }}
+              onPointerUp={(e) => {
+                e.currentTarget.releasePointerCapture(e.pointerId);
+                document.body.style.userSelect = "";
+                
+                if (sidebarRef.current) {
+                  const finalWidth = sidebarRef.current.style.width.replace('px', '');
+                  localStorage.setItem("sidebarWidth", finalWidth);
+                }
+              }}
+              onPointerMove={handlePointerMove}
+            />
         </div>
         <div id="edit">
           <Editor 
