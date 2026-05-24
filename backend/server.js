@@ -116,7 +116,7 @@ app.post('/api/create', async (req, res) => {
     const finalFile = path.join(finalDir, `${candidateName}.md`);
     await fs.writeFile(finalFile, '', 'utf8');
     
-    const relativePath = path.relative(NOTES_DIR, finalFile).split(path.sep).join('/');
+    const relativePath = path.relative(NOTES_DIR, finalDir).split(path.sep).join('/');
     res.json({ success: true, filePath: relativePath });
   } catch (error) {
     console.error("Error creating file:", error);
