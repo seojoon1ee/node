@@ -125,16 +125,19 @@ function MainWorkspace() {
   const [popupOpen, setPopupOpen] = useState(false);
 
   // sidebar
-  const savedWidth = localStorage.getItem('sidebarWidth') ? localStorage.getItem('sidebarWidth') : "250";
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    const saved = localStorage.getItem('sidebarWidth');
+    return saved ? parseInt(saved, 10) : 250;
+  }); 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.buttons === 1 && sidebarRef.current) {
       const sidebarLeft = sidebarRef.current.getBoundingClientRect().left;
       const rawWidth = e.clientX - sidebarLeft;
-      
       const newWidth = Math.max(160, Math.min(rawWidth, 360));
       
-      sidebarRef.current.style.width = `${newWidth}px`;
+      // Update state instead of direct DOM manipulation
+      setSidebarWidth(newWidth); 
     }
   };
 
@@ -330,7 +333,7 @@ function MainWorkspace() {
   return (
     <>
       <div id="view">
-        <div id="nodes" ref={sidebarRef} style={{ width: `${savedWidth}px` }}>
+        <div id="nodes" ref={sidebarRef} style={{ width: `${sidebarWidth}px` }}>
             <header id="header">
               <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
               <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
@@ -361,11 +364,7 @@ function MainWorkspace() {
               onPointerUp={(e) => {
                 e.currentTarget.releasePointerCapture(e.pointerId);
                 document.body.style.userSelect = "";
-                
-                if (sidebarRef.current) {
-                  const finalWidth = sidebarRef.current.style.width.replace('px', '');
-                  localStorage.setItem("sidebarWidth", finalWidth);
-                }
+                localStorage.setItem("sidebarWidth", sidebarWidth.toString());
               }}
               onPointerMove={handlePointerMove}
             />
