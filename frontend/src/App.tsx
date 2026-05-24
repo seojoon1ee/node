@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from 'reac
 import Editor from './Editor';
 import './style/App.css';
 
-
+// file list in the sidebar
 const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => void }) => {
   const parsedList = useMemo(() => {
     return files
@@ -23,7 +23,7 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
           const segB = b.segments[i].toLowerCase();
           
           if (segA !== segB) {
-            // if readme.md file exists it wil always stay on top of the list.
+            // if README folder exists it wil always stay on top of the list.
             if (segA === 'readme') return -1;
             if (segB === 'readme') return 1;
             return segA.localeCompare(segB);
@@ -37,8 +37,8 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
     <div id="nodesItems">
       {parsedList.map(({ fullPath, name, depth }) => (
         <div 
-          key={fullPath} 
-          style={{ paddingLeft: depth > 0 ? `${depth * 10}px` : '0px' }}
+          key={ fullPath } 
+          style={{ paddingLeft: (depth * 10 )}}
         >
           <Link to={`/${fullPath}`} style={{ textDecoration: 'none' }}>
             <button className="button">
@@ -68,6 +68,7 @@ function MainWorkspace() {
   const cacheRef = useRef<Record<string, string>>({});
   const [popupOpen, setPopupOpen] = useState(false);
 
+  // sidebar
   const savedWidth = localStorage.getItem('sidebarWidth') ? localStorage.getItem('sidebarWidth') : "250";
   const sidebarRef = useRef<HTMLDivElement>(null);
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -81,6 +82,7 @@ function MainWorkspace() {
     }
   };
 
+  // saved popup
   useEffect(() => {
     if (popupOpen) {
       const timer = setTimeout(() => setPopupOpen(false), 2000);
@@ -110,7 +112,6 @@ function MainWorkspace() {
     fetchFiles();
   }, [fetchFiles]);
 
-  // uses a mix of caching and loading to increase load time of nodes
   useEffect(() => {
     const loadFile = async () => {
       if (!filePath) {
