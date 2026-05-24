@@ -59,16 +59,16 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
   return (
     <div id="nodesItems">
       {visibleList.map(({ dirPath, name, depth, hasChildren }) => (
-        <div key={dirPath} style={{ paddingLeft: depth * 5 }}>
-          <div style={{ display: "flex", alignItems: "center" }}>
+        <div key={dirPath} style={{ paddingLeft: depth * 10 }}>
+          <div style={{ display: "flex", alignItems: "center", paddingLeft: "5px" }}>
             {hasChildren ? (
               <button 
                 onClick={() => setCollapsed(prev => ({ ...prev, [dirPath]: !prev[dirPath] }))}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: "#FFF0E3", paddingLeft: "5px", fontSize: "8px" }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: "#FFF0E3" }}
               >
                 {collapsed[dirPath] ? '▶' : '▼'}
               </button>
-            ) : <div style={{paddingLeft: "12px"}}/>}
+            ) : <div>T</div>}
             <Link to={`/${dirPath}`}>
               <button className="button">{name}</button>
             </Link>
