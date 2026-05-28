@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Markdown } from '@tiptap/markdown';
+import { Indent } from './Indent';
 import './style/Editor.css';
 
 interface EditorProps {
@@ -38,6 +39,11 @@ function Editor({ content, onChange, placeholder = "Start typing your node here.
       Placeholder.configure({
         placeholder: placeholder,
         emptyEditorClass: 'is-editor-empty', 
+      }),
+      Indent.configure({
+        names: ['paragraph', 'heading'],
+        indentRange: 24,
+        maxIndentLevel: 240, 
       }),
     ],
     content: content, 

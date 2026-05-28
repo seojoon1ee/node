@@ -136,7 +136,6 @@ function MainWorkspace() {
       const rawWidth = e.clientX - sidebarLeft;
       const newWidth = Math.max(160, Math.min(rawWidth, 360));
       
-      // Update state instead of direct DOM manipulation
       setSidebarWidth(newWidth); 
     }
   };
