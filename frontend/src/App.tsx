@@ -137,7 +137,7 @@ function MainWorkspace() {
     if (e.buttons === 1 && sidebarRef.current) {
       const sidebarLeft = sidebarRef.current.getBoundingClientRect().left;
       const rawWidth = e.clientX - sidebarLeft;
-      const newWidth = Math.max(160, Math.min(rawWidth, 360));
+      const newWidth = Math.max(170, Math.min(rawWidth, 360));
       
       setSidebarWidth(newWidth); 
     }
