@@ -4,7 +4,7 @@ import Editor from './Editor';
 import './style/App.css';
 
 // file list in the sidebar
-const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => void }) => {
+const FileList = memo(({ files, onCreate }: { files: string[], onCreate: (path:string) => void }) => {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   const parsedList = useMemo(() => {
@@ -60,7 +60,7 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
     <div id="nodesItems">
       {visibleList.map(({ dirPath, name, depth, hasChildren }) => (
         <div key={dirPath} style={{ paddingLeft: depth * 10 }}>
-          <div style={{ display: "flex", alignItems: "center", paddingLeft: "5px" }}>
+          <div style={{ display: "flex", alignItems: "center", paddingLeft: "5px" }} className='node'>
             {hasChildren ? (
               <button 
                 onClick={() => setCollapsed(prev => ({ ...prev, [dirPath]: !prev[dirPath] }))}
@@ -85,10 +85,11 @@ const FileList = memo(({ files, onCreate }: { files: string[], onCreate: () => v
             <Link to={`/${dirPath}`}>
               <button className="button">{name}</button>
             </Link>
+            <div></div>
+            <button onClick={() => onCreate(dirPath)} id="addButton">+</button> 
           </div>
         </div>
       ))}
-      <button onClick={onCreate} id="addButton">+</button> 
     </div>
   );
 });
@@ -111,6 +112,8 @@ function MainWorkspace() {
   };
 
   const filePath = getFilePath(parsedFilePath);
+
+  const [createFilePath, setCreateFilePath] = useState('');
 
   const [fileName, setFileName] = useState('');
   const navigate = useNavigate();
@@ -246,31 +249,14 @@ function MainWorkspace() {
     }
   }, [filePath, content, navigate, fetchFiles, serverIp]);
 
-  const createFile = useCallback(async () => {
-    try {
-      const response = await fetch(`${serverIp}/api/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentPath: filePath || '' }),
-      });
-      const data = await response.json();
-      
-      if (data.success) {
-        cacheRef.current[data.filePath] = '';
-        await fetchFiles();
-        navigate(`/${data.filePath}`); 
-      }
-    } catch (error) {
-      console.error('Create failed:', error);
-    }
-  }, [filePath, navigate, fetchFiles, serverIp]);
+  const createFile = useCallback(async (path:string) => {
+    console.log(`Creating file at path ${path}`)
 
-  const createFileAtRoot = useCallback(async () => {
     try {
       const response = await fetch(`${serverIp}/api/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentPath: '' }),
+        body: JSON.stringify({ currentPath: path || '' }),
       });
       const data = await response.json();
       
@@ -282,7 +268,8 @@ function MainWorkspace() {
     } catch (error) {
       console.error('Create failed:', error);
     }
-  }, [filePath, navigate, fetchFiles, serverIp]);
+  }, [filePath, navigate, fetchFiles, serverIp, createFilePath]);
+
 
   const deleteFile = useCallback(async () => {
     if (!filePath) {
@@ -336,7 +323,7 @@ function MainWorkspace() {
             <header id="header">
               <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
               <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
-              <button onClick={createFileAtRoot} className='headerButton'><img src='/plus.png' style={{width: "100%"}} className='headerImage' /></button>
+              <button onClick={() => createFile("")} className='headerButton'><img src='/plus.png' style={{width: "100%"}} className='headerImage' /></button>
               <div style={{marginTop: "auto"}} />
               <button onClick={changeServer} className='headerButton'><img src='/settings.png' style={{width: "100%"}} className='headerImage' /></button>
             </header>

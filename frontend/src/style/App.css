@@ -53,11 +53,16 @@ button:hover {
 }
 
 #addButton {
+  display: none;
   background-color: rgba(0,0,0,0);
   border: 0;
   color: #FFF0E3;
-
+  margin-left: auto;
   font-size: 16px;
+}
+
+.node:hover #addButton {
+  display: flex;
 }
 
 .button {
