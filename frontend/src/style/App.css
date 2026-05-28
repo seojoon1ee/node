@@ -18,30 +18,25 @@ button:hover {
 }
 
 hr {
-  padding: 0;
   margin-right: 0;
 }
 
 #view {
   display: grid;
-  grid-template-columns: auto 1fr;
-}
-
-#edit {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 20px;
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas: 
+    "header nodes editor";
 }
 
 #nodes {
   display: flex;
+  grid-area: nodes;
 }
 
 #nodesItems {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   overflow: auto;
 }
 
@@ -55,6 +50,7 @@ hr {
   flex-direction: column;
   gap: 5px;
   padding: 5px 5px;
+  grid-area: header;
 }
 
 #addButton {
@@ -65,6 +61,14 @@ hr {
   margin-left: auto;
   font-size: 16px;
   padding-left: 5px;
+}
+
+#HR_node {
+  margin-right: 10px;
+}
+
+#editor {
+  grid-area: editor;
 }
 
 .node {
@@ -98,6 +102,7 @@ hr {
 
   background: none;
   border: 0;
+  border-radius: 12px;
   color: #FFF0E3;
 
   padding: 10px;
@@ -109,13 +114,15 @@ hr {
 
 .popup {
   position: fixed;
-  bottom: 20px;
+  top: 10px;
   right: 20px;
-  background-color: #333;
+  background-color: #1e1e1e;
   border: 1px solid #FFF0E3;
+  border-radius: 12px;
   color: #FFF0E3;
-  padding: 16px 24px;
+  padding: 0;
   z-index: 1000;
+  padding: 8px 12px;
   
   transform: translateX(150%);
 

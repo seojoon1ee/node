@@ -119,6 +119,8 @@ function MainWorkspace() {
 
   const cacheRef = useRef<Record<string, string>>({});
   const [popupOpen, setPopupOpen] = useState(false);
+  const [sideBarOpen, toggleSideBar] = useState(true);
+
 
   // sidebar
   const [sidebarWidth, setSidebarWidth] = useState(() => {
@@ -130,7 +132,7 @@ function MainWorkspace() {
     if (e.buttons === 1 && sidebarRef.current) {
       const sidebarLeft = sidebarRef.current.getBoundingClientRect().left;
       const rawWidth = e.clientX - sidebarLeft;
-      const newWidth = Math.max(170, Math.min(rawWidth, 360));
+      const newWidth = Math.max(120, Math.min(rawWidth, 360));
       
       setSidebarWidth(newWidth); 
     }
@@ -312,18 +314,19 @@ function MainWorkspace() {
   return (
     <>
       <div id="view">
-        <div id="nodes" ref={sidebarRef} style={{ width: `${sidebarWidth}px` }}>
-            <header id="header">
-              <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
-              <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
-              <button onClick={() => createFile("")} className='headerButton'><img src='/plus.png' style={{width: "100%"}} className='headerImage' /></button>
-              <div style={{marginTop: "auto"}} />
-              <button onClick={changeServer} className='headerButton'><img src='/settings.png' style={{width: "100%"}} className='headerImage' /></button>
-            </header>
+        <header id="header">
+          <button onClick={() => toggleSideBar(!sideBarOpen)} className='headerButton'><img src='/sidebar.png' style={{width: "100%"}} className='headerImage' /></button>
+          <button onClick={saveFile} className='headerButton'><img src='/save.png' style={{width: "100%"}} className='headerImage' /></button>
+          <button onClick={deleteFile} className='headerButton'><img src='/delete.png' style={{width: "100%"}} className='headerImage' /></button>
+          <button onClick={() => createFile("")} className='headerButton'><img src='/plus.png' style={{width: "100%"}} className='headerImage' /></button>
+          <div style={{marginTop: "auto"}} />
+          <button onClick={changeServer} className='headerButton'><img src='/settings.png' style={{width: "100%"}} className='headerImage' /></button>
+        </header>
+        <div id="nodes" ref={sidebarRef} style={{ width: `${sidebarWidth}px`, display: sideBarOpen ? "flex" : "none" }}>
             <div className='list'>
               <h1 style={{ margin: "5px 0px", paddingLeft: "5px" }}>Nodes</h1>
             
-              <hr></hr>
+              <hr id="HR_node"></hr>
 
               {loading && <p>Loading files...</p>}
               {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -350,7 +353,7 @@ function MainWorkspace() {
               onPointerMove={handlePointerMove}
             />
         </div>
-        <div id="edit">
+        <div id="editor">
           <Editor 
             content={content} 
             onChange={setContent} 
@@ -358,10 +361,10 @@ function MainWorkspace() {
             onTitleChange={renameFile}
           />
         </div>
-        <div className={`popup ${popupOpen ? 'open' : ''}`}>
-          <div className="popup-content">
-            <p>Saved!</p>
-          </div>
+      </div>
+      <div className={`popup ${popupOpen ? 'open' : ''}`}>
+        <div className="popup-content">
+          <p>Saved!</p>
         </div>
       </div>
     </>
