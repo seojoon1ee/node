@@ -310,6 +310,30 @@ function MainWorkspace() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [saveFile]);
 
+  // autosave
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const debouncedSave = useCallback((newContent: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      if (!filePath) return
+      fetch(`${serverIp}/api/save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filePath, content: newContent }),
+      }).then(() => {
+        cacheRef.current[filePath] = newContent
+        setPopupOpen(true)
+      }).catch(err => console.error('Autosave failed:', err))
+    }, 700) // 700ms after the user stops typing. fine tune this value later.
+  }, [filePath, serverIp])
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [])
+
   return (
     <>
       <div id="view">
@@ -355,7 +379,7 @@ function MainWorkspace() {
         <div id="editor">
           <Editor 
             rawContent={content} 
-            onChange={setContent} 
+            onChange={(newContent) => { setContent(newContent); debouncedSave(newContent) }}
             title={fileName ? fileName : "Select or create a file"} 
             onTitleChange={renameFile}
           />
