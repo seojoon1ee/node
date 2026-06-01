@@ -354,7 +354,7 @@ function MainWorkspace() {
         </div>
         <div id="editor">
           <Editor 
-            content={content} 
+            rawContent={content} 
             onChange={setContent} 
             title={fileName ? fileName : "Select or create a file"} 
             onTitleChange={renameFile}

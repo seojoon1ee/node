@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useEffect, useState, useMemo, type ChangeEvent } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -7,14 +7,40 @@ import { Indent } from './Indent';
 import './style/Editor.css';
 
 interface EditorProps {
-  content: string;
+  rawContent: string;
   onChange: (value: string) => void;
   placeholder?: string;
   title: string;
   onTitleChange: (value: string) => void;
 }
 
-function Editor({ content, onChange, placeholder = "Start typing your node here...", title, onTitleChange }: EditorProps) {
+const preserveMarkdownNewlines = (markdown: string): string => {
+  const normalized = markdown.replace(/\r\n/g, '\n');
+  const parts = normalized.split(/(```[\s\S]*?```)/g);
+
+  return parts
+    .map((part) => {
+      // ignore code blocks
+      if (part.startsWith('```')) {
+        return part;
+      }
+      
+      return part.replace(/\n{3,}/g, (match) => {
+        const emptyParagraphsCount = Math.floor((match.length - 2) / 2);
+        
+        if (emptyParagraphsCount <= 0) return '\n\n';
+        
+        const emptyParagraphsHTML = Array(emptyParagraphsCount).fill('<p></p>').join('\n');
+        
+        return `\n\n${emptyParagraphsHTML}\n\n`;
+      });
+    })
+    .join('');
+};
+
+function Editor({ rawContent, onChange, placeholder = "Start typing your note here...", title, onTitleChange }: EditorProps) {
+  const content = useMemo(() => preserveMarkdownNewlines(rawContent), [rawContent]);
+  
   const invalidChars = /[\\/:*?"<>|]/;
 
   const [value, setTitle] = useState(title);
