@@ -33,6 +33,7 @@ hr {
   grid-area: nodes;
   position: relative;
   padding-right: 10px;
+  margin-top: 5px;
 }
 
 #nodesItems {
@@ -40,8 +41,6 @@ hr {
   flex-direction: column;
   gap: 5px;
 }
-
-
 
 #line {
   width: 100%;
@@ -87,7 +86,6 @@ hr {
   overflow: visible;
   max-width: 500px;
   width: auto;
-  margin: 0;
   z-index: 100;
 }
 

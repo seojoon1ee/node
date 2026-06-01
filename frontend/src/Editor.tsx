@@ -51,17 +51,17 @@ function Editor({ content, onChange, placeholder = "Start typing your node here.
   
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        orderedList: {
+          keepMarks: true,
+        },
+      }),
       Markdown,
       Placeholder.configure({
         placeholder: placeholder,
         emptyEditorClass: 'is-editor-empty', 
       }),
-      Indent.configure({
-        names: ['paragraph', 'heading'],
-        indentRange: 24,
-        maxIndentLevel: 240, 
-      }),
+      Indent,
     ],
     content: content, 
     contentType: 'markdown',
