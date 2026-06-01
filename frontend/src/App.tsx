@@ -397,6 +397,7 @@ function Settings() {
     if (ip) { 
       localStorage.setItem('serverIp', ip);
       serverIp = ip;
+      navigate("/");
     }
   }
 
